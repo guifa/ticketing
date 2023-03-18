@@ -14,4 +14,4 @@ spec:
     spec:
       containers:
         - name: auth
-          image: docker.io/guifa/auth
+          image: us.gcr.io/ticketing-dev-381003/auth
