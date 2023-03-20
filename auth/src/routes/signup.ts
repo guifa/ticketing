@@ -1,7 +1,7 @@
 import express, { Request, Response } from "express";
 import { body } from "express-validator";
 import { validationResult } from "express-validator/src/validation-result";
-import { DatabaseConnectionErrorError } from "../errors/database-connection-error";
+import { DatabaseConnectionError } from "../errors/database-connection-error";
 import { RequestValidationError } from "../errors/request-validation-error";
 
 const router = express.Router();
@@ -25,7 +25,7 @@ router.post('/api/v1/users/sign-up', [
     
     console.log('Creating user...', email, password);
     
-    throw new DatabaseConnectionErrorError();
+    throw new DatabaseConnectionError();
     
     res.send({});
 });
