@@ -1,9 +1,33 @@
-import { Request, Response, NextFunction } from "express";
+import e, { Request, Response, NextFunction } from "express";
+import { DatabaseConnectionErrorError } from "../errors/database-connection-error";
+import { RequestValidationError } from "../errors/request-validation-error";
 
 export const errorHandler = (err: Error, req: Request, res: Response, next: NextFunction) => {
-    console.log(err.message, err);
+    if (err instanceof RequestValidationError) {
+        const formatedErrors = err.errors.map(error => {
+            return { message: error.msg, field: error.param }
+        });
 
-    res.status(400).send({
-        message: err.message
-    });
+        return res.status(400).send({
+             errors: formatedErrors 
+        });
+    }
+
+    if (err instanceof DatabaseConnectionErrorError) {
+        return res.status(500).send({ 
+            errors: [
+                {
+                    message: err.reason 
+                }
+            ] 
+        });
+    }
+
+    res.status(500).send({ 
+        errors: [
+            {
+                message: err.message
+            }
+        ]
+     });
 };
